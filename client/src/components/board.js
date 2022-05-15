@@ -2,12 +2,23 @@ import React, { useState, useEffect } from "react";
 import Square from "./square";
 import axios from "axios";
 
+//Tic-tac-Toe game board and logic
+//Receives socket function, roomCode, User Data,
+//and function to update setUsers
 function Board({ socket, roomCode, user, setUser }) {
+  //Board array to store square positions and player input
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
+
+  //Displays result of game match
   const [result, setResult] = useState("");
+
+  //Player are X's
   const [player, setPlayer] = useState("X");
+
+  //Checks to see which player's turn
   const [turn, setTurn] = useState("X");
 
+  //Get's user data and sends it to the update api in mongoServer
   async function updatePlayerScore() {
     try {
       console.log(user);
@@ -18,7 +29,9 @@ function Board({ socket, roomCode, user, setUser }) {
     }
   }
 
+  //Function to check if there is any updates to the UI
   useEffect(() => {
+    //Checks when opponent makes a move
     socket.on("updateGame", (id) => {
       console.log("use effect", id);
       opponent(id.square);
@@ -28,6 +41,7 @@ function Board({ socket, roomCode, user, setUser }) {
     checkWin();
   }, [board]);
 
+  //Winning condition list
   const winCond = [
     [0, 1, 2],
     [3, 4, 5],
@@ -39,14 +53,7 @@ function Board({ socket, roomCode, user, setUser }) {
     [2, 4, 6],
   ];
 
-  const checker = (square) => {
-    console.log(turn);
-    if (turn) {
-      chooseSquare(square);
-    }
-    setTurn(false);
-  };
-
+  //Function to update gameboard to show opponents move
   const opponent = (square) => {
     console.log(square);
     setBoard(
@@ -59,6 +66,8 @@ function Board({ socket, roomCode, user, setUser }) {
     );
   };
 
+  //Function to update gameboard to show Player's move
+  //Set turn to opponents turn
   const chooseSquare = (square) => {
     if (turn === player && board[square] === "") {
       setTurn("O");
@@ -74,6 +83,7 @@ function Board({ socket, roomCode, user, setUser }) {
     }
   };
 
+  //Function to check if either player has hit the winning condition
   const checkWin = () => {
     winCond.forEach((currPattern) => {
       const firstPlayer = board[currPattern[0]];
@@ -85,6 +95,8 @@ function Board({ socket, roomCode, user, setUser }) {
         }
       });
 
+      //Once a player hits a winning condition,
+      //Updates player data if they won or lost
       if (foundWinningPattern) {
         if (board[currPattern[0]] === "X") {
           setResult("You Won");
@@ -103,6 +115,7 @@ function Board({ socket, roomCode, user, setUser }) {
     });
   };
 
+  //Checks if entire gameboard was filled
   const checkTie = () => {
     let filled = true;
     board.forEach((square) => {
@@ -110,7 +123,8 @@ function Board({ socket, roomCode, user, setUser }) {
         filled = false;
       }
     });
-
+    //If entire board was filled and none of the player won
+    //then display result as a tie
     if (filled) {
       setResult("It's a tie");
     }
@@ -118,8 +132,12 @@ function Board({ socket, roomCode, user, setUser }) {
 
   return (
     <div>
+      {/* Displays the results of the game */}
       <h1>{result}</h1>
       <h2>Refresh browser to logout and leave game</h2>
+
+      {/* Displays the entire gameboard
+          and when a square has been update the square */}
       <div className="board">
         <div className="row">
           <Square

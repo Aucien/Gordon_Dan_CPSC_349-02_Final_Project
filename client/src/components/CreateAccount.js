@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+//Create Account page
 function CreateAccount() {
+  //Stores and update user data
   const [user, setUser] = useState(null);
+
+  //Announcer to display whether account was successfully created
   const [announcer, setAnnouncer] = useState("");
+
+  //Function to send user profile to the createAccount API
   async function signup(event) {
     event.preventDefault();
     try {

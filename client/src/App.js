@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import Home from "./components/home";
 
+//Brings up the home component
 function App() {
   return (
     <div className="App">

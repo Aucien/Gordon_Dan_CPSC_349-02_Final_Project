@@ -1,10 +1,15 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the front-end application for the tic-tac-toe game.
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+
+Get's node modules
 
 ### `npm start`
 

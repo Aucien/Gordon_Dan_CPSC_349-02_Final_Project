@@ -1,5 +1,6 @@
 import React from "react";
 
+//Individual tic-tac-toe square
 function Square({ chooseSquare, val }) {
   return (
     <div className="square" onClick={chooseSquare}>
